@@ -4,7 +4,13 @@ angular.module('SmartGL',[
 .controller('MainController', function($scope){
   $scope.name = "Daniel Rossi Marinho";
 
-  $scope.active = "";
+  $scope.is_creating_recipe = false;
+  $scope.is_creating_grocery_list = false;
+  $scope.current_recipe = null;
+
+$scope.r_item_name = "";
+$scope.r_item_amount = "";
+$scope.recipe_items = [];
 
   $scope.items = [
     {"id": 0, "name": "Default", "amount": "0g"},
@@ -15,11 +21,40 @@ angular.module('SmartGL',[
 
   $scope.recipes = [
     {"id": 0, "name": "Default", "items": [$scope.items[3],$scope.items[1]]},
-    {"id": 0, "name": "Kapsalon", "items": [$scope.items[0],$scope.items[2]]}
+    {"id": 1, "name": "Kapsalon", "items": [$scope.items[0],$scope.items[2]]}
   ];
 
-function menu_selected(){
-return $scope.active = "active";
+function createRecipe(recipe,recipe_items){
+  recipe.id = $scope.recipes.length;
+  recipe.items = recipe_items;
+  $scope.recipes.push(recipe);
+  $scope.r_item_name = "";
+  $scope.r_item_amount = "";
+  $scope.recipe_items = [];
+
+  resetCreateRecipeForm();
 }
-  $scope.menu_selected = menu_selected;
+function resetCreateRecipeForm(){
+  $scope.newRecipe = {
+    id: null,
+    name: "",
+    items: []
+
+  }
+
+}
+
+function is_showing_recipe(recipe){
+  if(recipe==null){
+    $scope.current_recipe = null;
+    return false;
+  }else{
+    $scope.current_recipe = recipe;
+    return true;
+  }
+
+}
+  $scope.is_showing_recipe = is_showing_recipe;
+  $scope.createRecipe = createRecipe;
+  $scope.resetCreateRecipeForm = resetCreateRecipeForm;
 })

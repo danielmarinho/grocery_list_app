@@ -32,18 +32,15 @@
       <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
 
         <li>
-          <a href="#"  class="_selectable"><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> Grocery Lists</a>
+          <a href="#"  class="_selectable" ng-click="is_creating_recipe=false;is_showing_recipe(null);is_creating_grocery_list=true;"><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> Grocery Lists</a>
           <ul class="nav-pills nav-stacked" style="list-style-type:none;">
-            <li><a href="#">link1</a></li>
-            <li><a href="#">link2</a></li>
+            <li ng-repeat="item in items"><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>{{item.name}}</a></li>
           </ul>
         </li>
         <li>
-          <a href="#" class="_selectable"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span> Recipes</a>
+          <a href="#" class="_selectable" ng-click="is_creating_recipe=true;is_showing_recipe(null);is_creating_grocery_list=false;"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span> Recipes</a>
           <ul class="nav-pills nav-stacked" style="list-style-type:none;">
-            <li ng-repeat="recipe in recipes"><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>{{recipe.name}}</a></li>
-
-
+            <li ng-repeat="recipe in recipes"><a href="#" ng-click="$parent.is_creating_recipe=false;$parent.is_showing_recipe(recipe);$parent.is_creating_grocery_list=false;"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>{{recipe.name}}</a></li>
           </ul>
         </li>
 
@@ -56,16 +53,56 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
       <center>
-        <div class="container-fluid xyz">
+        <div class="container-fluid xyz" ng-hide="started">
           <div class="row">
             <div class="col-lg-12">
               <h1>Smart Grocery List</h1>
-              <a href="#" class="btn btn-default" data-toggle="collapse" id="menu-toggle">Start</a>
+              <a href="#" class="btn btn-default" data-toggle="collapse" id="menu-toggle" ng-click="started=true" ng-init="var started=false">Start</a>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="container-fluid xyz" ng-show="current_recipe!=null">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1>{{current_recipe.name}}</h1>
+              <p ng-repeat="item in current_recipe.items">{{item.name}}:{{item.amount}}</p>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="container-fluid xyz" ng-show="is_creating_recipe">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1>New Recipe</h1>
+              <button ng-click="is_creating_recipe=false;">Cancel</button>
+              <form class="create-form" role="form" ng-submit="createRecipe(newRecipe,recipe_items)" novalidate>
+                <div class="form-group">
+                  <label for="newRecipeName">Name</label>
+                  <input type="text" class="form-control" id="newRecipeName" ng-model="newRecipe.name">
+                </div>
+                <ng-form name="send_contact_form" novalidate>
+                  <label>Ingredients</label>
+                  <div ng-repeat="item in recipe_items">
+                    {{item.name}}:{{item.amount}}
+                  </div>
+                  <div class="form-group">
+                  <input type="text" class="_disableble form-control" ng-model="r_item_name" placeholder="Ingredient name">
+                  <input type="text" class="_disableble form-control" ng-model="r_item_amount" placeholder="Ingredient amount">
+                  <a href="#" ng-click="recipe_items.push({id: items.length, name: r_item_name, amount: r_item_amount });items.push({id: items.length, name: r_item_name, amount: r_item_amount });r_item_name='';r_item_amount=''">Add Ingredient</a>
+                </div>
+                </form>
+                <button id="submit_recipe" type="submit" class="btn btn-info btn-lg">Create</button>
+              </form>
             </div>
           </div>
         </div>
       </center>
     </div>
+
     <!-- /#page-content-wrapper -->
 
   </div>
