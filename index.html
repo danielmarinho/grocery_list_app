@@ -31,24 +31,24 @@
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
 
-        <li class="active">
-          <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> Grocery Lists</a>
+        <li>
+          <a href="#"  class="_selectable"><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> Grocery Lists</a>
           <ul class="nav-pills nav-stacked" style="list-style-type:none;">
             <li><a href="#">link1</a></li>
             <li><a href="#">link2</a></li>
           </ul>
         </li>
         <li>
-          <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span> Recipes</a>
+          <a href="#" class="_selectable"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span> Recipes</a>
           <ul class="nav-pills nav-stacked" style="list-style-type:none;">
-            <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>link1</a></li>
-            <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>link2</a></li>
+            <li ng-repeat="recipe in recipes"><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>{{recipe.name}}</a></li>
+
 
           </ul>
         </li>
-        
+
         <li>
-          <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-cloud-download fa-stack-1x "></i></span>About SmartGL</a>
+          <a href="#"  class="_selectable"><span class="fa-stack fa-lg pull-left"><i class="fa fa-cloud-download fa-stack-1x "></i></span>About SmartGL</a>
         </li>
 
       </ul>
@@ -79,6 +79,12 @@
   <script src="js/jquery-1.11.2.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/sidebar_menu.js"></script>
+  <script>
+  $('._selectable').click(function(){
+   $(this).parent().addClass('active');
+   $(this).parent().siblings().removeClass('active');
+  });
+  </script>
 
 </body>
 
