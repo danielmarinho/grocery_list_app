@@ -1,7 +1,7 @@
-angular.module('SmartGL',[
+angular.module('SmartGL',[ 'ngStorage'
 
 ])
-.controller('MainController', function($scope){
+.controller('MainController', function($scope, $localStorage){
   $scope.name = "Daniel Rossi Marinho";
 
   $scope.is_creating_recipe = false;
@@ -15,28 +15,29 @@ $scope.r_item_name = "";
 $scope.r_item_amount = "";
 $scope.recipe_items = [];
 $scope.list_items = [];
+if($localStorage.items == null){
+  $localStorage.items = [];
+}
 
-  $scope.items = [
-    {"id": 0, "name": "Default", "amount": "0g"},
-    {"id": 1, "name": "Bread", "amount": "550g"},
-    {"id": 2, "name": "Eggs", "amount": "2x"},
-    {"id": 3, "name": "Chocolate", "amount": "200g"}
-  ];
+if($localStorage.recipes == null){
+  $localStorage.recipes = [];
+}
 
-  $scope.recipes = [
-    {"id": 0, "name": "Default", "items": [$scope.items[3],$scope.items[1]]},
-    {"id": 1, "name": "Kapsalon", "items": [$scope.items[0],$scope.items[2]]}
-  ];
+if($localStorage.grocery_lists == null){
+  $localStorage.grocery_lists = [];
+}
 
-  $scope.grocery_lists = [
-    {id: 0, name: "Default", date: (new Date()).toLocaleDateString(), items: [$scope.items[0]]}
-  ];
+  $scope.items = $localStorage.items;
+
+  $scope.recipes = $localStorage.recipes;
+
+  $scope.grocery_lists = $localStorage.grocery_lists;
 
   function createGroceryList(list,list_items){
-    list.id = $scope.grocery_lists.length;
+    list.id = $localStorage.grocery_lists.length;
     list.items = list_items;
     list.date = (new Date()).toLocaleDateString();
-    $scope.grocery_lists.push(list);
+    $localStorage.grocery_lists.push(list);
     $scope.r_item_name = "";
     $scope.r_item_amount = "";
     $scope.list_items = [];
@@ -54,9 +55,9 @@ $scope.list_items = [];
   }
 
 function createRecipe(recipe,recipe_items){
-  recipe.id = $scope.recipes.length;
+  recipe.id = $localStorage.recipes.length;
   recipe.items = recipe_items;
-  $scope.recipes.push(recipe);
+  $localStorage.recipes.push(recipe)
   $scope.r_item_name = "";
   $scope.r_item_amount = "";
   $scope.recipe_items = [];
